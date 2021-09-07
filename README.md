@@ -5,6 +5,8 @@ Windows 11 Compatibility Check is an tool that runs in cmd.exe. No installations
 
 Old versions prior to 1.4.0 can be seen [here.](https://www.elevenforum.com/resources/windows-11-compatibility-check.4/)
 
+# ![img1](https://www.elevenforum.com/attachments/cmd_3xgfdbjw60-png.7021/)
+
 ## Features
 Copy and Export Results (that you can use to share the compatibility)
 
