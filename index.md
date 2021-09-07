@@ -4,7 +4,7 @@ You can use the [editor on GitHub](https://github.com/jbcarreon123/Win11CompChk/
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+### Win11CompChk
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
