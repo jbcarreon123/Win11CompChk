@@ -19,3 +19,5 @@ Latest Release Version | Latest Preview Version
 ------------ | -------------
 [Download](https://github.com/jbcarreon123/Win11CompChk/releases/v5.0.0/) | [Download](https://github.com/jbcarreon123/Win11CompChk/releases/v5.1.0/)
 ![GitHub release (by tag)](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/v5.0.0/total) | ![GitHub release (by tag)](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/v5.1.0/total)
+
+## Contribute [Here](https://github.com/jbcarreon123/Win11CompChk/contribute)!
