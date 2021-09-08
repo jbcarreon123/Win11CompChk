@@ -15,11 +15,16 @@ More info on your Results (v5 only; that you can see what you can upgrade)
 Windows 11 Release Countdown (v5 only; that you can see how many days Windows 11 will release)
 
 ## Download
+
 Latest Release Version | Latest Preview Version
 ------------ | -------------
 [Download](https://github.com/jbcarreon123/Win11CompChk/releases/v5.0.0/) | [Download](https://github.com/jbcarreon123/Win11CompChk/releases/v5.1.0/)
 ![GitHub release (by tag)](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/v5.0.0/total) | ![GitHub release (by tag)](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/v5.1.0/total)
 
+
 ### Contribute [Here](https://github.com/jbcarreon123/Win11CompChk/contribute)!
 
-Windows and Windows 11 are trademark of Microsoft Inc. Win11CompChk are not endorsed or affiliated by Microsoft Inc.
+```
+Windows and Windows 11 are trademark of Microsoft Inc.
+Win11CompChk are not endorsed or affiliated by Microsoft Inc.
+```
