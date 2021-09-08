@@ -25,6 +25,7 @@
 - Include the *code and description*
 - Include the comparisons
 - Should be available for PowerShell for 7/8/8.1/10/11
+- The code should output English
 
 ### Check code changes
 - The code should output useful strings
@@ -33,5 +34,5 @@
 
 ### PWSH and WMIC changes
 - Windows Powershell 5.0 should recognise the command
-- WMIC can be used, but note the WMIC is depectated
+- WMIC can be used, but note that WMIC is depectated
 
