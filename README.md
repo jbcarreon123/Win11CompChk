@@ -17,5 +17,5 @@ Windows 11 Release Countdown (v5 only; that you can see how many days Windows 11
 ## Download
 Latest Release Version | Latest Preview Version
 ------------ | -------------
-[Download](https://github.com/jbcarreon123/Win11CompChk/releases/latest) | [Download](https://github.com/jbcarreon123/Win11CompChk/releases/prerelease)
+[Download](https://github.com/jbcarreon123/Win11CompChk/releases/v5.0.0/Win11CompChk.bat/download) | [Download](https://github.com/jbcarreon123/Win11CompChk/releases/v5.1.0/Win11CompChk.bat/download)
 ![GitHub release (by tag)](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/v5.0.0/total) | ![GitHub release (by tag)](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/v5.1.0/total)
