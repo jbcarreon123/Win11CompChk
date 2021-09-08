@@ -25,7 +25,7 @@
 ### All Code changes
 - Include the *code and description*
 - Include the comparisons
-- Should be available for PowerShell for 7/8/8.1/10/11
+- If the command is a PowerShell cmdlet, should be available for PowerShell for 7/8/8.1/10/11
 - The code should output English
 
 ### Check code changes
