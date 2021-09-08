@@ -5,7 +5,7 @@
 - You can use Windows variables
    - Just don't mess up with Windows enviroment variables like `%temp%`
 - You can edit this using the built-in Windows Notepad `notepad.exe` or other third-party text editors
-- [Notepad++](notepad-plus-plus/notepad-plus-plus) is **recommended**.
+- [Notepad++](https://github.com/notepad-plus-plus/notepad-plus-plus) is **recommended**.
 
 ## Pull Requests
 
