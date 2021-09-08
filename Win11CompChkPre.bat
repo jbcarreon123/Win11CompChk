@@ -1000,9 +1000,9 @@ del %temp%\WDDMV4.log
 type %temp%\WDDMV5.log >%temp%\WDDMV.log
 set /p "WDDMV=" <%temp%\WDDMV.log
 
-if "%WDDMV%" GEQ "2.0" ( echo Your PC has WDDM %WDDMV%. >con && echo Your WDDM version is supported by Windows 11. >con && set "wre=[102mOK[106m") else ( echo Your PC has WDDM %WDDMV%. >con && echo Your WDDM version is not supported by Windows 11. >con && set "wre=[41;37mX[106;30m ")
+if "%WDDMV%" GEQ "2.0" ( echo Your PC has WDDM %WDDMV%. >con && echo Your WDDM version is supported by Windows 11. >con && set "wre=[102mOK[106m") else ( echo Your PC has WDDM %WDDMV%. >con && echo Your WDDM version is not supported by Windows 11. >con && set "wre=[103m![106m ")
 if not "%wre%"=="[102mOK[106m" (
-if "%WDDMV%"==" 3.0" ( echo Your PC has WDDM %WDDMV%. >con && echo Your WDDM version is supported by Windows 11. >con && set "wre=[102mOK[106m") else ( set "wre=[41;37mX[106;30m ")
+if "%WDDMV%"==" 3.0" ( echo Your PC has WDDM %WDDMV%. >con && echo Your WDDM version is supported by Windows 11. >con && set "wre=[102mOK[106m") else ( set "wre=[103m![106m ")
 )
 
 ::CPU Core Count
@@ -1069,8 +1069,7 @@ if "%firmware_type%"=="UEFI" ( echo Your PC boot mode is supported by Windows 11
 ::SecureBoot
 echo. >con
 echo Checking if Secure Boot is enabled... >con
-powershell Confirm-SecureBootUEFI >%temp%\CSB.log 2>nul
-set /p "CSB=" <%temp%\CSB.log
+reg query HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State /v UEFISecureBootEnabled | findstr /c:"0x0" >nul 2>&1 || set "CSB=True"
 
 if "%CSB%"=="True" (
 echo Your PC has Secure Boot Enabled. >con
@@ -1141,6 +1140,7 @@ set "tre=[41;37mX[106;30m "
 )
 
 ::TPM Version
+:tpmres
 echo Getting TPM Version... >con
 wmic /namespace:\\root\cimv2\security\microsofttpm path win32_tpm get * /format:textvaluelist.xsl | findstr /c:"PhysicalPresenceVersionInfo" >%temp%\tpmv.log
 powershell ^(get-content "%temp%\tpmv.log"^) -replace 'PhysicalPresenceVersionInfo','' ^|  Out-File %temp%\tpmv2.log
@@ -1151,9 +1151,12 @@ type %temp%\tpmv5.log > %temp%\tpmv6.log
 set /p "tpmv=" <%temp%\tpmv6.log
 
 
-if "%tpmv%"=="" ( echo No TPM Detected >con && set "tvre=[41;37mX[106;30m " && set "tpmver=No TPM detected") else ( 
-if "%tpmv%" GEQ "1.3" ( set "tvre=[102mOK[106m" && set "tpmver=%tpmv% [2.0]") else ( set "tvre=[41;37mX[106;30m ")
+if "%tpmv%"=="" ( echo No TPM Detected >con && set "tvre=[41;37mX[106;30m " && set "tpmver=No TPM detected")
+if not "%tpmver%"=="No TPM detected" (
+if not "%tpmv%" GEQ "1.3" (  set "tvre=[41;37mX[106;30m ")
+if "%tpmv%"=="1.3" ( set "tvre=[102mOK[106m" && set "tpmver=2.0") else ( set "tpmver=%tpmv%)
 echo TPM Version: %tpmv% >con
+)
 )
 
 ::Monitor Resolution
@@ -1626,7 +1629,7 @@ if "%tvre%"=="[41;37mX[106;30m " (
 ping 127.0.0.1 -n 1 -w 500> nul
 echo        TPM Version: You need an TPM 2.0.
 )
-if "%wre%"=="[41;37mX[106;30m " (
+if "%wre%"=="[103m![106m " (
 ping 127.0.0.1 -n 1 -w 500> nul
 echo        WDDM Version: You need an WDDM 2.0 in your GPU or iGPU.
 )
