@@ -21,6 +21,13 @@ Latest Release Version | Latest Preview Version
 [Download](https://github.com/jbcarreon123/Win11CompChk/releases/v5.0.0/) | [Download](https://github.com/jbcarreon123/Win11CompChk/releases/v5.1.0/)
 ![GitHub release (by tag)](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/v5.0.0/total) | ![GitHub release (by tag)](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/v5.1.0/total)
 
+## System Requirements
+Requirements | Minimum | Recommended
+---------- | ---------- | ----------
+CPU | 64-bit CPU with SSE3 | 8th-gen Intel or Zen 2
+RAM | 50MB available | 250MB available
+OS | Windows 7 SP1 | Windows 10 1909
+Others | CMD and PowerShell | CMD and PowerShell
 
 ### Contribute [Here](https://github.com/jbcarreon123/Win11CompChk/contribute)!
 Before contributing, Check the [contributing.md](contributing.md)
