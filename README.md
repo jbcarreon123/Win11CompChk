@@ -23,6 +23,7 @@ Latest Release Version | Latest Preview Version
 
 
 ### Contribute [Here](https://github.com/jbcarreon123/Win11CompChk/contribute)!
+Before contributing, Check the [contributing.md](contributing.md)
 
 ```
 Windows and Windows 11 are trademark of Microsoft Inc.
