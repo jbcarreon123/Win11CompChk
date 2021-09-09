@@ -29,9 +29,7 @@ RAM | 50MB available | 250MB available
 OS | Windows 7 SP1 | Windows 10 1909
 Others | CMD and PowerShell | CMD and PowerShell
 
-### Contribute [Here](https://github.com/jbcarreon123/Win11CompChk/contribute)!
-Before contributing, Check the [contributing.md](contributing.md)
-
+[![cn1](https://img.shields.io/badge/Contribute-Here-brightgreen)](https://github.com/jbcarreon123/Win11CompChk/contribute)! [![cn2](https://img.shields.io/badge/Contributing-.md-brightgreen)](CONTRIBUTING.MD)
 ```
 Windows and Windows 11 are trademark of Microsoft Inc.
 Win11CompChk are not endorsed or affiliated by Microsoft Inc.
