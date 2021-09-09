@@ -28,6 +28,9 @@ RAM | 50MB available | 250MB available
 OS | Windows 7 SP1 | Windows 10 1909
 Others | CMD and PowerShell | CMD and PowerShell
 
+## Execution Time of Index Mode (on HDD) [Win11CompChk v5.1.0]
+![ywKx8AFmvf](https://user-images.githubusercontent.com/86447165/132702265-423e1263-8859-4c7e-8bc1-47ae7241dce2.gif)
+
 ```
 Windows and Windows 11 are trademark of Microsoft Inc.
 Win11CompChk are not endorsed or affiliated by Microsoft Inc.
