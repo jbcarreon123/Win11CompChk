@@ -1,4 +1,4 @@
-![GitHub all releases](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/total) ![GitHub file size in bytes](https://img.shields.io/github/size/jbcarreon123/Win11CompChk/Win11CompChk.bat) [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/jbcarreon123/Win11CompChk?include_prereleases)](https://github.com/jbcarreon123/Win11CompChk/releases/v5.1.0) [![GitHub](https://img.shields.io/github/license/jbcarreon123/Win11CompChk)](LICENSE) ![GitHub Repo stars](https://img.shields.io/github/stars/jbcarreon123/Win11CompChk?style=social) ![GitHub forks](https://img.shields.io/github/forks/jbcarreon123/Win11CompChk?style=social)
+![GitHub all releases](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/total) ![GitHub file size in bytes](https://img.shields.io/github/size/jbcarreon123/Win11CompChk/Win11CompChk.bat) [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/jbcarreon123/Win11CompChk?include_prereleases)](https://github.com/jbcarreon123/Win11CompChk/releases/v5.1.0) [![GitHub](https://img.shields.io/github/license/jbcarreon123/Win11CompChk)](LICENSE) ![GitHub Repo stars](https://img.shields.io/github/stars/jbcarreon123/Win11CompChk?style=social) ![GitHub forks](https://img.shields.io/github/forks/jbcarreon123/Win11CompChk?style=social) [![cn1](https://img.shields.io/badge/Contribute-Here-brightgreen?style=social)](https://github.com/jbcarreon123/Win11CompChk/contribute) [![cn2](https://img.shields.io/badge/Contributing-.md-brightgreen)](contributing.md)
 
 # Windows 11 Compatibility Check
 Windows 11 Compatibility Check is an tool that runs in cmd.exe. No installations required!
@@ -29,7 +29,6 @@ RAM | 50MB available | 250MB available
 OS | Windows 7 SP1 | Windows 10 1909
 Others | CMD and PowerShell | CMD and PowerShell
 
-[![cn1](https://img.shields.io/badge/Contribute-Here-brightgreen)](https://github.com/jbcarreon123/Win11CompChk/contribute) [![cn2](https://img.shields.io/badge/Contributing-.md-brightgreen)](contributing.md)
 ```
 Windows and Windows 11 are trademark of Microsoft Inc.
 Win11CompChk are not endorsed or affiliated by Microsoft Inc.
