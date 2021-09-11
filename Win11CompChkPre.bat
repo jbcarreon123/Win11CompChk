@@ -8,7 +8,7 @@ goto St
 
 :St
 set "rty=Pre"
-set "curver=5.0.0"
+set "curver=5.1.0"
 
 :str
 :: Clears console
@@ -22,7 +22,9 @@ echo [91mBy using this tool, you agreed to this license here:[0m
 echo [4mhttps://github.com/jbcarreon123/Win11CompChk/blob/main/LICENSE[0m
 echo.
 if "%rty%"=="Pre" (
+if not exist "%temp%\CurrentPreReleaseVer.log" (
 powershell $source = 'https://github.com/jbcarreon123/Win11CompChk/raw/main/UpdateWorker/CurrentPreReleaseVer.log'; $destination = '%temp%\CurrentPreReleaseVer.log'; Start-BitsTransfer -Source $source -Destination $destination
+)
 set /p "CPW=" <"%temp%\CurrentPreReleaseVer.log"
 if "%curver%" GEQ %CPW% ( echo New Pre-Release Available! Win11CompChk v%CPW% & echo https://github.com/jbcarreon123/Win11CompChk/releases/v%CPW%/ & echo.)
 if "%curver%" LEQ %CPW% ( echo New Pre-Release Available! Win11CompChk v%CPW% & echo https://github.com/jbcarreon123/Win11CompChk/releases/v%CPW%/ & echo.)
@@ -30,7 +32,9 @@ goto strpn
 )
 
 if "%rty%"=="Sre" (
+if not exist "%temp%\CurrentReleaseVer.log" (
 powershell $source = 'https://github.com/jbcarreon123/Win11CompChk/raw/main/UpdateWorker/CurrentReleaseVer.log'; $destination = '%temp%\CurrentReleaseVer.log'; Start-BitsTransfer -Source $source -Destination $destination
+)
 set /p "CRW=" <"%temp%\CurrentReleaseVer.log"
 if "%curver%" GEQ %CRW% ( echo New Stable Release Available! Win11CompChk v%CPW% & echo https://github.com/jbcarreon123/Win11CompChk/releases/v%CPW%/ & echo.)
 if "%curver%" LEQ %CRW% ( echo New Stable Release Available! Win11CompChk v%CPW% & echo https://github.com/jbcarreon123/Win11CompChk/releases/v%CPW%/ & echo.)
@@ -127,8 +131,8 @@ if "%2"=="Pass" ( set "wesu=1" )
 )
 if "%1"=="-R" ( goto Test00)
 ::Check and write username
-set /p "usrnm=" <%temp%\usrnm.log
-if not "%usrnm%"=="%username%" ( echo Username not registered && del "%appdata%\Win11CompChk\index.log")
+set /p "usrnm=" <%temp%\usrnm.log 2>nul
+if not "%usrnm%"=="%username%" ( echo Username not registered && del "%appdata%\Win11CompChk\index.bat" 2>nul)
 echo %username%>%temp%\usrnm.log
 
 ::code start
@@ -1246,7 +1250,7 @@ if "%mre%"=="[102mOK[106m" ( set /a "points+=1")
 if "%tvre%"=="[102mOK[106m" ( set /a "points+=1")
 if "%points%"=="13" ( set "res=can") else ( set "res=can't")
 
-mode con cols=75 lines=29
+mode con cols=75 lines=28
 color b0
 echo. >con                     
 ping 127.0.0.1 -n 1 -w 1000> nul
@@ -1300,7 +1304,6 @@ echo  This took around %mm%: %ss%,%cc%.  You %res% run Windows 11 on your comput
 ping 127.0.0.1 -n 1 -w 1000> nul
 echo     [0] ^> Exit  [C] ^> Copy Results  [E] ^> Export Results  [A] ^> About
 echo           [M] ^> More info of the result  [B] ^> Back to CMD Prompt
-echo                   [F] ^> Some Feature-specific Requirements
 choice /c 0ceambf /n >nul
 if "%errorlevel%"=="1" (
 color
@@ -1635,44 +1638,6 @@ choice /c YN /m "Do you want to delete Win11CompChk Index? This will run Slow Mo
 if "%errorlevel%"=="1" ( del "%appdata%\Win11CompChk\index.bat" && echo Deleted.)
 exit /b
 
-:fsrq
-powershell Get-WindowsEdition -Online ^| select -expandproperty "Edition" >%temp%\WE.log
-set /p "we=" <%temp%\WE.log
-set "HRRes=1920", "VRRes=1080"
-if "%we%"=="Home" ( set "weer=Not Supported") else ( set "weer=Supported")
-if "%HRes%" GEQ %HRRes% (
-if "%VRes%" GEQ %VRRes% ( set "snap3=Supported") else ( set "snap3=Not Supported")
-) else (
-set "snap3=Not Supported"
-)
-ipconfig /all | findstr /c:"Wi-Fi Direct" >nul 2>nul && ( set "wper=Supported")
-if not "%wper%"=="Supported" ( set "wper=Not Supported")
-if "%wper%"=="Supported" (
-if "%wre%"=="[102mOK[106m" ( set "wpr=Supported") else ( set "wpr=Not Supported")
-) else (
-set "wpr=Not Supported"
-)
-echo.
-ping 127.0.0.1 -n 1 -w 500> nul
-echo      Some feature-specific requirements
-ping 127.0.0.1 -n 1 -w 500> nul
-echo.
-ping 127.0.0.1 -n 1 -w 500> nul
-echo      Bitlocker To Go:      %weer%
-ping 127.0.0.1 -n 1 -w 500> nul
-echo      Snap [3 Columms]:     %snap3%
-ping 127.0.0.1 -n 1 -w 500> nul
-echo      Windows Projection:   %wpr%
-ping 127.0.0.1 -n 1 -w 500> nul
-echo.
-ping 127.0.0.1 -n 1 -w 500> nul
-echo      [O] Other requirements
-ping 127.0.0.1 -n 1 -w 500> nul
-echo      [B] Back to the Results page
-ping 127.0.0.1 -n 1 -w 500> nul
-choice /c OB >nul
-if "%errorlevel%"=="1" ( start "" "https://www.microsoft.com/en-us/windows/windows-11-specifications#Feature-specific-requirements-for-Windows-11")
-goto Final
 
 :cmd
 echo [0m
