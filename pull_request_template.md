@@ -44,6 +44,7 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] Starter (Windows 7)
 - [ ] Home Basic (Windows 7)
 - [ ] Home Premium (Windows 7)
+- [ ] Home (Windows 8, 8.1, 10, 11)
 - [ ] Professional (All Windows versions)
 - [ ] Ultimate (Windows 7)
 - [ ] Enterprise (All Windows versions)
