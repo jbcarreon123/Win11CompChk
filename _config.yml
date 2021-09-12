@@ -1,3 +1,4 @@
 theme: jekyll-theme-cayman
 title: Windows 11 Compatibility Check - jbcarreon123
 description: Windows 11 Compatibility Check is an tool that runs on Command Prompt to check Windows 11 readiness
+show_downloads: true
