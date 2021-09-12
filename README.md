@@ -19,7 +19,7 @@ Windows 11 Release Countdown (v5 only; that you can see how many days Windows 11
 Latest Release Version | Latest Preview Version
 ------------ | -------------
 [![dl1](https://img.shields.io/badge/Download-v5.2.0-brightgreen)](https://github.com/jbcarreon123/Win11CompChk/releases/v5.2.0/) | None
-![GitHub release (by tag)](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/v5.2.0/total) | None
+![GitHub release (latest by date)](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/latest/total) | None
 
 ## System Requirements
 Requirements | Minimum | Recommended
