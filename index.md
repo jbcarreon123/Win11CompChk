@@ -28,3 +28,8 @@ Win11CompChk needs at least:
 - -D: Delete Index.bat
 - --override-index: Override index.bat
 - -D -E: Run Debug Mode
+
+### Compiling to EXE
+1. Download the batch file by downloading the ZIP file or using ```git clone https://github.com/jbcarreon123/Win11CompChk```
+2. Refer to this instructions [here](https://www.windowsq.com/t/use-iexpress-to-create-exe-file-from-batch-file.1575/) to create an EXE file.
+NOTE: If you want to use other compilers than instructed here, you may be expirencing false-positives.
