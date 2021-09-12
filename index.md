@@ -22,3 +22,9 @@ Win11CompChk needs at least:
 - CPU: with SSE3 (Pentium 4 or Athlon 64)
 - RAM available: 50MB
 - Others: Windows Command Prompt and PowerShell
+
+### Command-line arguments
+```Win11CompChk [-D] [-D -E] [--override-index]```
+- -D: Delete Index.bat
+- --override-index: Override index.bat
+- -D -E: Run Debug Mode
