@@ -1,6 +1,3 @@
-(https://github.com/jbcarreon123/Win11CompChk/blob/main/Win11CompChk.bat)
-(https://github.com/jbcarreon123/Win11CompChk/blob/main/Win11CompChk.zip)
-
 ## Win11CompChk
 
 A batch script that checks Windows 11 readiness on your PC
