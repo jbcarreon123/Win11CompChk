@@ -13,7 +13,7 @@ A batch script that checks Windows 11 readiness on your PC
 ### Download
 
 - You can download v5.2.0 here:
-https://github.com/jbcarreon123/Win11CompChk/releases/
+[https://github.com/jbcarreon123/Win11CompChk/releases/](https://github.com/jbcarreon123/Win11CompChk/releases/)
 
 ### System Requirements
 
