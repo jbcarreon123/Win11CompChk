@@ -1,27 +1,36 @@
 @echo off
 goto St
 ------------------------------------------------------
-     Windows 11 Compatibility Check 1.4.2 beta 1
+         Windows 11 Compatibility Check 5.1.1 
 	          Created by JBCarreon123 at
        elevenforum.com/members/jbcarreon123.22/
 ------------------------------------------------------
 
-::Save param
-Set "[-]=$X.icon = [System.Drawing.SystemIcons]::Information;$X.visible = $true"
-Set "[$]=(PowerShell.exe [reflection.assembly]::loadwithpartialname^('System.Windows.Forms'^)"
-Set "[+]=[reflection.assembly]::loadwithpartialname^('System.Drawing'^)"
-Set "[S]=[System.Reflection.Assembly]::LoadWithPartialName('System.windows.forms')"
-Set "[P]=New-Object System.Windows.Forms.SaveFileDialog"
-
 :St
+set "rty=Sre"
+set "curver=5.1.0"
+
+:str
 :: Clears console
 cls
-:: Colors console to blue-white
-color 1f
 :: Sets the console
 mode con cols=125 lines=35
 chcp 65001 >nul
 
+echo.
+echo [91mBy using this tool, you agreed to this license here:[0m
+echo [4mhttps://github.com/jbcarreon123/Win11CompChk/blob/main/LICENSE[0m
+echo.
+
+if "%rty%"=="Pre" (
+goto pre
+)
+
+if "%rty%"=="Sre" (
+goto sre
+)
+
+:strpn
 echo ░██╗░░░░░░░██╗██╗███╗░░██╗░░███╗░░░░███╗░░░█████╗░░█████╗░███╗░░░███╗██████╗░░█████╗░██╗░░██╗██╗░░██╗  ██╗░░░██╗███████╗ >con
 echo ░██║░░██╗░░██║██║████╗░██║░████║░░░████║░░██╔══██╗██╔══██╗████╗░████║██╔══██╗██╔══██╗██║░░██║██║░██╔╝  ██║░░░██║██╔════╝ >con
 echo ░╚██╗████╗██╔╝██║██╔██╗██║██╔██║░░██╔██║░░██║░░╚═╝██║░░██║██╔████╔██║██████╔╝██║░░╚═╝███████║█████═╝░  ╚██╗░██╔╝██████╗░ >con
@@ -71,6 +80,7 @@ set "people=Zardoc [ElevenForum.com/members/141]"
 set "desc=who Beta tested the tool and created the Win11CompChk thread"
 set "abn="
 
+if "%1"=="--override-index" ( set "ovrind=1")
 if "%1"=="-G" ( goto :%2)
 if "%1"=="-D" (
 if "%2"=="-E" (
@@ -91,17 +101,17 @@ if "%1"=="--ECHO:0" (
 echo on
 echo DEBUG MODE >con
 )
-::Measure the date to Windows 11 Release
-PowerShell $Obj = ((get-date '10/5/2021 00:00:0') - (get-date));$Obj.Days >"%AppData%\Win11CompChk\dt.log"
-set /p "dt=" <"%AppData%\Win11CompChk\dt.log"
+
 ::Measure the execution time
 for /F "tokens=1-4 delims=:.," %%a in ("%time%") do ( set /A "start=(((%%a*60)+1%%b %% 100)*60+1%%c %% 100)*100+1%%d %% 100" )
 set "timest=%time%"
 ::Check Index file
+if not "%ovrind%"=="1" (
 if exist "%AppData%\Win11CompChk\index.bat" ( echo Win11CompChk Index found. >con && call "%AppData%\Win11CompChk\index.bat" && goto :f) else ( echo Win11CompChk Index not found. Running Slow Mode... >con)
+)
 
 :: Requires Admin Previliges
-(Fsutil Dirty Query %SystemDrive%>Nul)||(PowerShell start-process -filepath """%~fn0""" -argumentlist """%1 %2 %3""" -verb RunAs & Exit /B)
+(Fsutil Dirty Query %SystemDrive%>Nul)||(PowerShell start-process -filepath """cmd""" -argumentlist """/c %~fn0 %1 %2 %3 /d""" -verb RunAs & Exit /B)
 :: Parameter check
 if "%1"=="-T" (
 if "%2"=="Fail" ( set "wesu=0" )
@@ -109,8 +119,8 @@ if "%2"=="Pass" ( set "wesu=1" )
 )
 if "%1"=="-R" ( goto Test00)
 ::Check and write username
-set /p "usrnm=" <%temp%\usrnm.log
-if not "%usrnm%"=="%username%" ( echo Username not registered && del "%appdata%\Win11CompChk\index.log")
+set /p "usrnm=" <%temp%\usrnm.log 2>nul
+if not "%usrnm%"=="%username%" ( echo Username not registered && del "%appdata%\Win11CompChk\index.bat" 2>nul)
 echo %username%>%temp%\usrnm.log
 
 ::code start
@@ -133,766 +143,783 @@ type %temp%\CPUC.log | findstr /c:"Qualcomm" >nul 2>&1 && set "CPU=Qualcomm"
 echo Your PC has an %CPU% CPU [%CPUn%]. >con
 
 if "%CPU%"=="Intel" (
-type %temp%\CPUC.log | findstr /c:"Atom(R) x6200FE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Atom(R) x6211E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Atom(R) x6212RE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Atom(R) x6413E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Atom(R) x6414RE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Atom(R) x6425E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Atom(R) x6425RE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Atom(R) x6427FE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G4900" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G4900T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G4920" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G4930" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G4930E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G4930T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G4932E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G4950" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) J4005" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) J4105" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) J4115" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) N4000" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) N4100" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) 3867U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) 4205U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) 4305U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) 4305UE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) J4025" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) J4125" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) N4020" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) N4120" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) 5205U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) 5305U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G5900" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G5900E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G5900T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G5900TE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G5905" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G5905T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G5920" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) G5925" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) J6412" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) J6413" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) N6210" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) N6211" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) N4500" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) N4505" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) N5100" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) N5105" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) 6305" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Celeron(R) 6305E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-7640X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-7740X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-7800X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-7820HQ" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-7820X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-7900X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-7920X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-7940X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-7960X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-7980XE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10210Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10310Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8200Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8210Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8310Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10510Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8500Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) m3-8100Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8100" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8100B" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8100H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8100T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8109U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8140U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8300" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8300T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8350K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8400" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8500" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8257U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8259U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8260U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8269U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8279U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8300H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8400" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8400B" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8400H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8400T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8500" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8500B" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8500T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8600" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8600K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8600T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8086K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8557U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8559U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8569U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8700" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8700B" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8700K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8700T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8750H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8850H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8130U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8250U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8350U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8550U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8650U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8145U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8145UE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8265U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8365U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8365UE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8565U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8665U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8665UE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9100" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9100E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9100F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9100HL" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9100T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9100TE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9300" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9300T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9320" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9350K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9350KF" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9300H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9300HF" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9400" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9400F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9400H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9400T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9500" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9500E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9500F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9500T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9500TE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9600" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9600K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9600KF" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9600T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9700" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9700E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9700F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9700K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9700KF" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9700T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9700TE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9750H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9750HF" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9850H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9850HE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9850HL" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-8950HK" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9880H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9900" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9900K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9900KF" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9900KS" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9900T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9980HK" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10100Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10110Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10920X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10940X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10980XE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10100" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10100E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10100F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10100T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10100TE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10105" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10105F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10105T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10110U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10300" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10300T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10305" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10305T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10320" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10325" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10200H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10210U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10300H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10310U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10400" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10400F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10400H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10400T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10500" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10500E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10500H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10500T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10500TE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10600" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10600K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10600KF" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10600T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10510U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10610U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10700" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10700E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10700F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10700K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10700KF" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10700T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10700TE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10710U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10750H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10810U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10850H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10870H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10875H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10850K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10885H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900KF" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900TE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10980HK" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1000G1" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1000G4" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1005G1" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1030G4" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1030G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1035G1" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1035G4" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1035G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1038NG7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1060G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1065G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1068NG7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-L13G4" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-L16G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11400" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11400F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11400T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11500" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11500T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11600" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11600K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11600KF" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11600T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-11700" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-11700F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-11700K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-11700KF" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-11700T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-11900" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-11900F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-11900K" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-11900KF" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i9-11900T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1110G4" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1115G4" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1115G4E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1115GRE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1120G4" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1125G4" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11300H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1130G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1135G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1135G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1140G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1145G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1145G7E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1145GRE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-11370H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-11375H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1160G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1165G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1165G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1180G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1185G7" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1185G7E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1185GRE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU 4425Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU 6500Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5400" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5400T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5420" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5420T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5500" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5500T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5600" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5600T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5620" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold 4425Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold 6500Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5400" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5400T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5420" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5420T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5500" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5500T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5600" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5600T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5620" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Silver J5005" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Silver N5000" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU 4417U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU 5405U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold 4417U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold 5405U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Silver J5040" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Silver N5030" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold 6405U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6400" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6400E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6400T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6400TE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6405" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6405T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6500" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6500T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6505" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6505T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6600" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6605" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU 6405U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6400" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6400E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6400T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6400TE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6405" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6405T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6500" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6500T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6505" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6505T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6600" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6605" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) 6805" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) J6426" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) N6415" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Silver N6000" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) Silver N6005" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU 7505" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Bronze 3104" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Bronze 3106" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5115" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5118" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5119T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5120" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5120T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5122" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6126" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6126F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6126T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6128" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6130" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6130F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6130T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6132" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6134" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6136" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6138" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6138F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6138P" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6138T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6140" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6142" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6142F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6144" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6146" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6148" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6148F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6150" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6152" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6154" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8153" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8156" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8158" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8160" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8160F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8160T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8164" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8168" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8170" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8176" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8176F" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8180" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4108" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4109T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4110" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4112" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4114" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4114T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4116" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4116T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2124" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2124G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2126G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2134" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2136" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2144G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2146G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2174G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2176G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2176M" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2186G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2186M" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2224" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2224G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2226G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2226GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2234" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2236" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2244G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2246G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2254ME" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2254ML" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2274G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2276G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2276M" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2276ME" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2276ML" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2278G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2278GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2278GEL" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2286G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2286M" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2288G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Bronze 3204" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Bronze 3206R" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5215" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5215L" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5217" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5218B" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5218N" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5218R" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5218T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5220" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5220R" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5220S" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5220T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5222" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6208U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6209U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6210U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6212U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6222V" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6226" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6226R" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6230" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6230N" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6230R" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6230T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6238" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6238L" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6238T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6240" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6240L" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6240R" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6240Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6242" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6242R" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6244" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6246R" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6248" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6248R" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6250" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6250L" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6252" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6252N" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6254" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6256" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6258R" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6262V" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5218" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6238R" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6246" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6234" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8253" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8256" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8260" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8260L" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8260Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8268" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8270" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8276" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8276L" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8280" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8280L" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 9221" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 9222" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 9242" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 9282" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4208" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4209T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4210" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4210R" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4210T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4214" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4214R" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4214Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4215" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4215R" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4216" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2223" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2225" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2235" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2245" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2255" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2265" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2275" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2295" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3223" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3225" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3235" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3245" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3245M" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3265" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3265M" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3275" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3275M" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-10855M" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-10885M" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1250" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1250E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1250P" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1250TE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1270" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1270E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1270P" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1270TE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1290" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1290E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1290P" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1290T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1290TE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2102" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2104" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2123" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2125" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2133" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2135" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2145" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2155" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2175" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2195" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5315Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5317" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5318N" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5318S" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5320" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5320T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6312U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6314U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6326" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6330" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6330N" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6334" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6336Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6338" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6338N" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6338T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6342" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6346" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6348" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6354" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5318Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8351N" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8352S" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8352V" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8352Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8358" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8358P" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8360Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8368" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8368Q" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8380" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4309Y" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4310" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4310T" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4314" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4316" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
-type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4316" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
+type %temp%\CPUC.log | findstr /c:"Atom(R) x6200FE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Atom(R) x6211E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Atom(R) x6212RE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Atom(R) x6413E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Atom(R) x6414RE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Atom(R) x6425E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Atom(R) x6425RE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Atom(R) x6427FE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G4900 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G4900T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G4920 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G4930 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G4930E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G4930T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G4932E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G4950 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) J4005 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) J4105 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) J4115 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) N4000 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) N4100 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) 3867U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) 4205U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) 4305U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) 4305UE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) J4025 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) J4125 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) N4020 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) N4120 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) 5205U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) 5305U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G5900 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G5900E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G5900T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G5900TE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G5905 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G5905T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G5920 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) G5925 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) J6412 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) J6413 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) N6210 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) N6211 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) N4500 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) N4505 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) N5100 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) N5105 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) 6305 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Celeron(R) 6305E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-7640X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-7740X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-7800X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-7820HQ " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-7820X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-7900X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-7920X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-7940X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-7960X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-7980XE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10210Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10310Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8200Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8210Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8310Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10510Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8500Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) m3-8100Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8100 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8100B " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8100H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8100T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8109U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8140U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8300 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8300T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8350K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8400 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8500 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8257U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8259U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8260U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8269U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8279U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8300H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8400 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8400B " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8400H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8400T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8500 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8500B " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8500T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8600 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8600K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8600T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8086K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8557U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8559U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8569U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8700 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8700B " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8700K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8700T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8750H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8809G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8850H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8130U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8250U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8350U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8550U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8650U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8145U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-8145UE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8265U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8365U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-8365UE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8565U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8665U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-8665UE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9100 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9100E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9100F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9100HL " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9100T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9100TE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9300 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9300T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9320 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9350K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-9350KF " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9300H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9300HF " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9400 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9400F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9400H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9400T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9500 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9500E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9500F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9500T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9500TE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9600 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9600K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9600KF " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-9600T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9700 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9700E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9700F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9700K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9700KF " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9700T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9700TE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9750H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9750HF " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9800X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9850H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9850HE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-9850HL " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-8950HK " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9880H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9900 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9900K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9900KF " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9900KS " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9900T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9900X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9920X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9940X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9960X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-9980HK " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10100Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10110Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10920X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10940X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10980XE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10100 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10100E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10100F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10100T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10100TE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10105 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10105F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10105T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10110U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10300 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10300T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10305 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10305T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10320 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-10325 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10200H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10210U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10300H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10310U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10400 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10400F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10400H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10400T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10500 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10500E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10500H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10500T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10500TE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10600 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10600K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10600KF " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-10600T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10510U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10610U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10700 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10700E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10700F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10700K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10700KF " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10700T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10700TE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10710U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10750H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10810U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10850H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10870H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-10875H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10850K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10885H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900KF " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10900TE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-10980HK " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1000G1 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1000G4 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1005G1 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1030G4 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1030G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1035G1 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1035G4 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1035G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1038NG7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1060G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1065G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1068NG7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-L13G4 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-L16G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11400 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11400F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11400T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11500 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11500T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11600 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11600K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11600KF " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11600T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-11700 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-11700F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-11700K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-11700KF " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-11700T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-11900 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-11900F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-11900K " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-11900KF " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i9-11900T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1110G4 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1115G4 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1115G4E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1115GRE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1120G4 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i3-1125G4 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-11300H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1130G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1135G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1135G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1140G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1145G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1145G7E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i5-1145GRE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-11370H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-11375H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1160G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1165G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1165G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1180G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1185G7 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1185G7E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Core(TM) i7-1185GRE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU 4425Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU 6500Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5400 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5400T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5420 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5420T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5500 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5500T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5600 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5600T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G5620 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold 4425Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold 6500Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5400 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5400T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5420 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5420T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5500 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5500T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5600 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5600T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G5620 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Silver J5005 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Silver N5000 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU 4417U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU 5405U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold 4417U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold 5405U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Silver J5040 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Silver N5030 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold 6405U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6400 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6400E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6400T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6400TE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6405 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6405T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6500 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6500T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6505 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6505T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6600 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Gold G6605 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU 6405U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6400 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6400E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6400T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6400TE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6405 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6405T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6500 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6500T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6505 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6505T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6600 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU G6605 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) 6805 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) J6426 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) N6415 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Silver N6000 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) Silver N6005 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Pentium(R) CPU 7505 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Bronze 3104 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Bronze 3106 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5115 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5118 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5119T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5120 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5120T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5122 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6126 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6126F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6126T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6128 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6130 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6130F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6130T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6132 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6134 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6136 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6138 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6138F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6138P " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6138T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6140 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6142 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6142F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6144 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6146 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6148 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6148F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6150 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6152 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6154 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8153 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8156 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8158 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8160 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8160F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8160T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8164 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8168 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8170 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8176 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8176F " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8180 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4108 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4109T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4110 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4112 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4114 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4114T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4116 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4116T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2124 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2124G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2126G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2134 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2136 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2144G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2146G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2174G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2176G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2176M " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2186G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2186M " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2224 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2224G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2226G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2226GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2234 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2236 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2244G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2246G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2254ME " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2254ML " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2274G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2276G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2276M " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2276ME " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2276ML " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2278G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2278GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2278GEL " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2286G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2286M " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) E-2288G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Bronze 3204 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Bronze 3206R " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5215 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5215L " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5217 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5218B " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5218N " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5218R " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5218T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5220 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5220R " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5220S " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5220T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5222 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6208U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6209U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6210U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6212U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6222V " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6226 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6226R " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6230 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6230N " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6230R " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6230T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6238 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6238L " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6238T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6240 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6240L " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6240R " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6240Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6242 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6242R " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6244 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6246R " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6248 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6248R " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6250 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6250L " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6252 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6252N " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6254 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6256 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6258R " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6262V " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5218 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6238R " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6246 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6234 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8253 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8256 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8260 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8260L " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8260Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8268 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8270 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8276 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8276L " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8280 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8280L " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 9221 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 9222 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 9242 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 9282 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4208 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4209T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4210 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4210R " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4210T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4214 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4214R " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4214Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4215 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4215R " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4216 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2223 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2225 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2235 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2245 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2255 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2265 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2275 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2295 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3223 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3225 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3235 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3245 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3245M " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3265 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3265M " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3275 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-3275M " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-10855M " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-10885M " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1250 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1250E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1250P " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1250TE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1270 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1270E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1270P " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1270TE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1290 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1290E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1290P " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1290T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-1290TE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2102 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2104 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2123 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2125 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2133 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2135 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2145 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2155 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2175 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) W-2195 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5315Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5317 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5318N " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5318S " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5320 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5320T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6312U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6314U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6326 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6330 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6330N " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6334 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6336Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6338 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6338N " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6338T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6342 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6346 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6348 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 6354 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Gold 5318Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8351N " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8352S " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8352V " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8352Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8358 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8358P " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8360Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8368 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8368Q " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Platinum 8380 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4309Y " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4310 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4310T " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4314 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Xeon(R) Silver 4316 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
 )
 if "%CPU%"=="AMD" (
-type %temp%\CPUC.log | findstr /c:"3015e" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"3020e" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Athlon Gold 3150C" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Athlon Gold 3150U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Athlon Silver 3050C" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Athlon Silver 3050e" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Athlon Silver 3050U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Athlon 3000G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Athlon 300GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Athlon 300U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Athlon 320GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Athlon Gold 3150G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Athlon Gold 3150GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Athlon Silver 3050GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7232P" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7252" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7262" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7272" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7282" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7302" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7302P" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7352" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7402" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7402P" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7452" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7502" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7502P" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7532" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7542" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7552" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7642" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7662" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7702" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7702P" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7742" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7F32" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7F52" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7F72" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7H12" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 72F3" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7313" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7313P" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7343" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 73F3" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7413" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7443" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7443P" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7453" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 74F3" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7513" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7543" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7543P" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 75F3" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7643" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7663" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7713" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7713P" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"EPYC 7763" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 3250C" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 3250U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 3200G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 3200GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 3200U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 3350U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 2300X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 5300U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 3100" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 3300U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 4300G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 4300GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 4300U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 5400U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 3200G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 3200GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 3300U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 4350G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 4350GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 4450U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 5450U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 3400G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 3400GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 3450U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 3500C" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 3500U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 3550H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 3580U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 2500X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 2600 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 2600E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 2600X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 5500U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 3500" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 3600" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 3600X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 3600XT" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 4600G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 4500U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 4600GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 4600H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 4600U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 5600H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 5600HS" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 5600U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 5600X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 3400G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 3400GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 3500U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 2600" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 3600" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 4650G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 4650GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 4650U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 5650U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 3700C" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 3700U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 3750H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 3780U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 2700 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 2700E" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 2700X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 5700U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 3700X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 3800X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 3800XT" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 4700G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 4700GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 4700U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 4800H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 4800HS" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 4800U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 5800H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 5800HS" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 5800U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 5800" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 5800X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 PRO 3700U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 PRO 2700" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 PRO 2700X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 PRO 4750G" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 PRO 4750GE" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 PRO 4750U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 7 PRO 5850U" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 9 3900" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 9 3900X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 9 3900XT" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 9 3950X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 9 4900H" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 9 4900HS" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 9 5900HS" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 9 5900HX" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 9 5980HS" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 9 5980HX" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 9 5900" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 9 5900X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 9 5950X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen 9 PRO 3900" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper 2920X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper 2950X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper 2970WX" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper 2990WX" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper 3960X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper 3970X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper 3990X" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper PRO 3945WX" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper PRO 3955WX" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper PRO 3975WX" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper PRO 3995WX" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
+type %temp%\CPUC.log | findstr /c:"3015e " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"3020e " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Athlon 3000G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Athlon 300GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Athlon 300U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Athlon 320GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Athlon Gold 3150C " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Athlon Gold 3150G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Athlon Gold 3150GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Athlon Gold 3150U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Athlon Silver 3050C " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Athlon Silver 3050e " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Athlon Silver 3050GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Athlon Silver 3050U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7252 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7262 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7272 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7282 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7302 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7313 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7343 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7352 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7402 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7413 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7443 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7452 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7453 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7502 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7513 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7532 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7542 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7543 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7552 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7642 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7643 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7662 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7663 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7702 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7713 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7742 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7763 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7232P " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 72F3 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7302P " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7313P " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 73F3 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7402P " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7443P " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 74F3 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7502P " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7543P " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 75F3 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7702P " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7713P " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7F32 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7F52 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7F72 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"EPYC 7H12 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 3100 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 2300X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 3200G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 3200GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 3200U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 3250C " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 3250U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 3300U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 3350U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 4300G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 4300GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 4300U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 5300U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 5400U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 3200G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 3200GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 3300U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 4350G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 4350GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 4450U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 5350G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 5350GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 3 PRO 5450U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 2600 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 3600 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 2500X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 2600E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 2600X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 3400G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 3400GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 3450U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 3500 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 3500C " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 3500U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 3550H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 3580U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 3600X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 3600XT " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 4500U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 4600G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 4600GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 4600H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 4600U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 5300G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 5300GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 5500U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 5600G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 5600GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 5600H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 5600HS " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 5600U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 5600X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 2600 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 3600 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 3400G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 3400GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 3500U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 4650G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 4650GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 4650U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 5650G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 5650GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 5650U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 5750G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 5 PRO 5750GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 2700  " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 5800 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 2700E " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 2700X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 3700C " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 3700U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 3700X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 3750H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 3780U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 3800X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 3800XT " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 4700G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 4700GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 4700U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 4800H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 4800HS " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 4800U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 5700G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 5700GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 5700U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 5800H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 5800HS " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 5800U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 5800X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 PRO 2700 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 PRO 2700X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 PRO 3700U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 PRO 4750G " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 PRO 4750GE " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 PRO 4750U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 7 PRO 5850U " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 9 5900 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 9 3900 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 9 3900X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 9 3900XT " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 9 3950X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 9 4900H " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 9 4900HS " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 9 5900HS " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 9 5900HX " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 9 5900X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 9 5950X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 9 5980HS " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 9 5980HX " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen 9 PRO 3900 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper 2920X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper 2950X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper 2970WX " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper 2990WX " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper 3960X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper 3970X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper 3990X " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper PRO 3945WX " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper PRO 3955WX " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper PRO 3975WX " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
+type %temp%\CPUC.log | findstr /c:"Ryzen Threadripper PRO 3995WX " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn  
 )
-type %temp%\CPUC.log | findstr /c:"Snapdragon (TM) 850" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Snapdragon (TM) 7c" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Snapdragon (TM) 8c" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Snapdragon (TM) 8cx" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Microsoft SQ1" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
-type %temp%\CPUC.log | findstr /c:"Microsoft SQ2" >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
+type %temp%\CPUC.log | findstr /c:"Snapdragon (TM) 850 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
+type %temp%\CPUC.log | findstr /c:"Snapdragon (TM) 7c " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
+type %temp%\CPUC.log | findstr /c:"Snapdragon (TM) 8c " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
+type %temp%\CPUC.log | findstr /c:"Snapdragon (TM) 8cx " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
+type %temp%\CPUC.log | findstr /c:"Microsoft SQ1 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
+type %temp%\CPUC.log | findstr /c:"Microsoft SQ2 " >nul 2>&1 && set "CPUComp=Compatible"  && goto cpufn 
 
 :cpufn
 if not "%CPUComp%"=="Compatible" ( set "cpucomp=Incompatible" )
@@ -931,9 +958,9 @@ del %temp%\WDDMV4.log
 type %temp%\WDDMV5.log >%temp%\WDDMV.log
 set /p "WDDMV=" <%temp%\WDDMV.log
 
-if "%WDDMV%" GEQ "2.0" ( echo Your PC has WDDM %WDDMV%. >con && echo Your WDDM version is supported by Windows 11. >con && set "wre=[102mOK[106m") else ( echo Your PC has WDDM %WDDMV%. >con && echo Your WDDM version is not supported by Windows 11. >con && set "wre=[41;37mX[106;30m ")
+if "%WDDMV%" GEQ "2.0" ( echo Your PC has WDDM %WDDMV%. >con && echo Your WDDM version is supported by Windows 11. >con && set "wre=[102mOK[106m") else ( echo Your PC has WDDM %WDDMV%. >con && echo Your WDDM version is not supported by Windows 11. >con && set "wre=[103m![106m ")
 if not "%wre%"=="[102mOK[106m" (
-if "%WDDMV%"==" 3.0" ( echo Your PC has WDDM %WDDMV%. >con && echo Your WDDM version is supported by Windows 11. >con && set "wre=[102mOK[106m") else ( set "wre=[41;37mX[106;30m ")
+if "%WDDMV%"==" 3.0" ( echo Your PC has WDDM %WDDMV%. >con && echo Your WDDM version is supported by Windows 11. >con && set "wre=[102mOK[106m") else ( set "wre=[103m![106m ")
 )
 
 ::CPU Core Count
@@ -998,8 +1025,9 @@ echo Your PC boot mode is %firmware_type%. >con
 if "%firmware_type%"=="UEFI" ( echo Your PC boot mode is supported by Windows 11. >con && set "bre=[102mOK[106m") else ( echo Your PC boot mode is not supported by Windows 11. Consider switching to UEFI. >con && set "bre=[41;37mX[106;30m ")
 
 ::SecureBoot
+:SB
 echo. >con
-echo Checking if Secure Boot is enabled... >con
+echo Checking if your PC can support Secure Boot... >con
 powershell Confirm-SecureBootUEFI >%temp%\CSB.log 2>nul
 set /p "CSB=" <%temp%\CSB.log
 
@@ -1007,16 +1035,18 @@ if "%CSB%"=="True" (
 echo Your PC has Secure Boot Enabled. >con
 set "sbr=Secure Boot Capable and Enabled"
 set "sre=[102mOK[106m"
-) else (
-echo Your PC has Secure Boot Disabled. >con
-set "sbr=Secure Boot Capable but Disabled"
-set "sre=[41;37mX[106;30m "
 )
 
-if "%firmware_type%"=="Legacy" (
-echo Secure boot is not supported on your current boot method. >con
-set "sbr=Secure Boot Not Supported"
-set "sre=[41;37mX[106;30m "
+if "%CSB%"=="False" (
+echo Your PC has Secure Boot Disabled. >con
+set "sbr=Secure Boot Capable but Disabled"
+set "sre=[102mOK[106m"
+)
+
+if "%CSB%"=="" (
+if "%firmware_type%"=="Legacy" ( echo Secure boot is not supported on your current boot method. >con & set "sbr=Secure Boot Not Supported" & set "sre=[41;37mX[106;30m ")
+
+if "%firmware_type%"=="UEFI" ( echo Secure boot is not supported on your current motherboard. >con & set "sbr=Secure Boot Not Supported" & set "sre=[41;37mX[106;30m ")
 )
 
 ::DiskMthd
@@ -1072,6 +1102,7 @@ set "tre=[41;37mX[106;30m "
 )
 
 ::TPM Version
+:tpmres
 echo Getting TPM Version... >con
 wmic /namespace:\\root\cimv2\security\microsofttpm path win32_tpm get * /format:textvaluelist.xsl | findstr /c:"PhysicalPresenceVersionInfo" >%temp%\tpmv.log
 powershell ^(get-content "%temp%\tpmv.log"^) -replace 'PhysicalPresenceVersionInfo','' ^|  Out-File %temp%\tpmv2.log
@@ -1082,9 +1113,12 @@ type %temp%\tpmv5.log > %temp%\tpmv6.log
 set /p "tpmv=" <%temp%\tpmv6.log
 
 
-if "%tpmv%"=="" ( echo No TPM Detected >con && set "tvre=[41;37mX[106;30m " && set "tpmver=No TPM detected") else ( 
-if "%tpmv%" GEQ "1.3" ( set "tvre=[102mOK[106m" && set "tpmver=%tpmv% [2.0]") else ( set "tvre=[41;37mX[106;30m ")
+if "%tpmv%"=="" ( echo No TPM Detected >con && set "tvre=[41;37mX[106;30m " && set "tpmver=No TPM detected")
+if not "%tpmver%"=="No TPM detected" (
+if not "%tpmv%" GEQ "1.3" (  set "tvre=[41;37mX[106;30m ")
+if "%tpmv%"=="1.3" ( set "tvre=[102mOK[106m" && set "tpmver=2.0") else ( set "tpmver=%tpmv%)
 echo TPM Version: %tpmv% >con
+)
 )
 
 ::Monitor Resolution
@@ -1131,7 +1165,7 @@ echo set "people=%people%" >>"%appdata%\Win11CompChk\index2.bat"
 echo set "desc=%desc%" >>"%appdata%\Win11CompChk\index2.bat"
 echo set "dt=%dt%" >>"%appdata%\Win11CompChk\index2.bat"
 :fnal
-start cmd /c "%~fn0 -G test01"
+start cmd /c "%~fn0 -G test01" /d
 exit /b
 :test01
 call "%appdata%\Win11CompChk\index2.bat"
@@ -1175,7 +1209,7 @@ echo set "ram=%ram%" >>"%appdata%\Win11CompChk\index.bat"
 echo set "tpm1=%tpm1%" >>"%appdata%\Win11CompChk\index.bat"
 echo set "tpm2=%tpm2%" >>"%appdata%\Win11CompChk\index.bat"
 echo set "tpmver=%tpmver%" >>"%appdata%\Win11CompChk\index.bat"
-echo set "cput=%wddmv%" >>"%appdata%\Win11CompChk\index.bat"
+echo set "wddmv=%wddmv%" >>"%appdata%\Win11CompChk\index.bat"
 echo set "inte=%inte%" >>"%appdata%\Win11CompChk\index.bat"
 )
 ::End Indexing
@@ -1200,7 +1234,6 @@ if "%cfre%"=="[102mOK[106m" ( set /a "points+=1")
 if "%rre%"=="[102mOK[106m" ( set /a "points+=1")
 if "%are%"=="[102mOK[106m" ( set /a "points+=1")
 if "%bre%"=="[102mOK[106m" ( set /a "points+=1")
-if "%sre%"=="[102mOK[106m" ( set /a "points+=1")
 if "%dre%"=="[102mOK[106m" ( set /a "points+=1")
 if "%fre%"=="[102mOK[106m" ( set /a "points+=1")
 if "%dxre%"=="[102mOK[106m" ( set /a "points+=1")
@@ -1208,63 +1241,63 @@ if "%wre%"=="[102mOK[106m" ( set /a "points+=1")
 if "%tre%"=="[102mOK[106m" ( set /a "points+=1")
 if "%mre%"=="[102mOK[106m" ( set /a "points+=1")
 if "%tvre%"=="[102mOK[106m" ( set /a "points+=1")
-if "%points%"=="14" ( set "res=can") else ( set "res=can't")
+if "%points%"=="13" ( set "res=can") else ( set "res=can't")
 
 mode con cols=75 lines=28
 color b0
 echo. >con                     
-ping 127.0.0.1 -n 1 -w 500> nul
-echo                   [41;37m Windows 11 will release at %dt% day(s)! [106;30m
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
+echo                  [41;37m Windows 11 will release at Oct 5 2021! [106;30m
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo                                  Results:
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo        *Based on currently published system requirements by Microsoft 
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo. >con
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %are%       Arch:          %CPUA% CPU, %OSA% OS
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %bre%       Boot Mode:     %firmware_type%
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %cput%     CPU Category:
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %cre%     ├─CPU:           %CPUn%
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %crre%     ├─CPU Core #:    %cpucn% Core(s), %cpulp% Logical Processor(s)
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %cfre%     └─CPU Freq:      %CPUf%MHz
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %dre%       Disk Par Sty:  %DiskSch% (Note: This is the Boot drive)
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %dxre%       DX Version:    %DXV%
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %fre%       Free Space:    %gb%GB
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %mre%       Monitor Res:   %HRes%x%VRes%
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %rre%       RAM:           %RAM%GB
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %sre%       Secure Boot:   %sbr%
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %tre%       TPM:           TPM Active: %tpm1%, TPM Enabled: %tpm2%
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %tvre%       TPM Version:   %tpmver%
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %wre%       WDDM Version:  %WDDMV%
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo. >con
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo            Required if you want to install the Home edition:
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  %ire%       Internet:      %inte%
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo. >con
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo  This took around %mm%: %ss%,%cc%.  You %res% run Windows 11 on your computer.
-ping 127.0.0.1 -n 1 -w 500> nul
+ping 127.0.0.1 -n 1 -w 1000> nul
 echo     [0] ^> Exit  [C] ^> Copy Results  [E] ^> Export Results  [A] ^> About
 echo           [M] ^> More info of the result  [B] ^> Back to CMD Prompt
-choice /c 0ceamb /n >nul
+choice /c 0ceambf /n >nul
 if "%errorlevel%"=="1" (
 color
 cls
@@ -1275,6 +1308,7 @@ if "%errorlevel%"=="3" ( goto export)
 if "%errorlevel%"=="4" ( goto about)
 if "%errorlevel%"=="5" ( goto moreinfo)
 if "%errorlevel%"=="6" ( goto cmd)
+if "%errorlevel%"=="7" ( goto fsrq)
 
 :copy
 echo [N]ormal text, [B]B Code included, or [H]TML Code included?
@@ -1382,6 +1416,12 @@ ping 127.0.0.1 -n 1 -w 500> nul
 echo        ElevenForum.com/t/584
 ping 127.0.0.1 -n 1 -w 500> nul
 echo. >con
+ping 127.0.0.1 -n 1 -w 500> nul
+echo        Contribute by checking this link:
+ping 127.0.0.1 -n 1 -w 500> nul
+echo        https://github.com/jbcarreon123/Win11CompChk/contribute
+ping 127.0.0.1 -n 1 -w 500> nul
+echo.
 ping 127.0.0.1 -n 1 -w 500> nul
 echo        Press [B] to go back on the Results page.
 choice /c BC /n /d C /t 2 >nul
@@ -1557,7 +1597,7 @@ if "%tvre%"=="[41;37mX[106;30m " (
 ping 127.0.0.1 -n 1 -w 500> nul
 echo        TPM Version: You need an TPM 2.0.
 )
-if "%wre%"=="[41;37mX[106;30m " (
+if "%wre%"=="[103m![106m " (
 ping 127.0.0.1 -n 1 -w 500> nul
 echo        WDDM Version: You need an WDDM 2.0 in your GPU or iGPU.
 )
@@ -1590,6 +1630,29 @@ goto Final
 choice /c YN /m "Do you want to delete Win11CompChk Index? This will run Slow Mode."
 if "%errorlevel%"=="1" ( del "%appdata%\Win11CompChk\index.bat" && echo Deleted.)
 exit /b
+
+:sre
+if "%CRW%"=="" (
+powershell $source = 'https://github.com/jbcarreon123/Win11CompChk/raw/main/UpdateWorker/CurrentReleaseVer.log'; $destination = '%temp%\CurrentReleaseVer.log'; Start-BitsTransfer -Source $source -Destination $destination
+)
+set /p "CRW=" <"%temp%\CurrentReleaseVer.log"
+if not "%CRW%"=="%curver%" (
+if "%curver%" GEQ %CRW% ( echo New Stable Release Available! Win11CompChk v%CPW% & echo https://github.com/jbcarreon123/Win11CompChk/releases/v%CPW%/ & echo. )
+if "%curver%" LEQ %CRW% ( echo New Stable Release Available! Win11CompChk v%CPW% & echo https://github.com/jbcarreon123/Win11CompChk/releases/v%CPW%/ & echo. )
+)
+goto strpn
+
+:pre
+if "%CPW%"=="" (
+powershell $source = 'https://github.com/jbcarreon123/Win11CompChk/raw/main/UpdateWorker/CurrentPreReleaseVer.log'; $destination = '%temp%\CurrentPreReleaseVer.log'; Start-BitsTransfer -Source $source -Destination $destination
+)
+if not "%CRW%"=="%curver%" (
+set /p "CPW=" <"%temp%\CurrentPreReleaseVer.log"
+if "%curver%" GEQ %CPW% ( echo New Pre-Release Available! Win11CompChk v%CPW% & echo https://github.com/jbcarreon123/Win11CompChk/releases/v%CPW%/ & echo. )
+if "%curver%" LEQ %CPW% ( echo New Pre-Release Available! Win11CompChk v%CPW% & echo https://github.com/jbcarreon123/Win11CompChk/releases/v%CPW%/ & echo. )
+)
+goto strpn
+
 
 :cmd
 echo [0m
