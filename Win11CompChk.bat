@@ -1,14 +1,14 @@
 @echo off
 goto St
 ------------------------------------------------------
-         Windows 11 Compatibility Check 5.1.1 
+         Windows 11 Compatibility Check 5.4.0
 	          Created by JBCarreon123 at
        elevenforum.com/members/jbcarreon123.22/
 ------------------------------------------------------
 
 :St
 set "rty=Sre"
-set "curver=5.1.0"
+set "curver=5.4.0"
 
 :str
 :: Clears console
@@ -16,6 +16,8 @@ cls
 :: Sets the console
 mode con cols=125 lines=35
 chcp 65001 >nul
+
+if "%1"=="--V2" ( set "V2=1" & set "V2Path=%2" )
 
 echo.
 echo [91mBy using this tool, you agreed to this license here:[0m
@@ -31,6 +33,7 @@ goto sre
 )
 
 :strpn
+if not "%V2%"=="1" (
 echo ░██╗░░░░░░░██╗██╗███╗░░██╗░░███╗░░░░███╗░░░█████╗░░█████╗░███╗░░░███╗██████╗░░█████╗░██╗░░██╗██╗░░██╗  ██╗░░░██╗███████╗ >con
 echo ░██║░░██╗░░██║██║████╗░██║░████║░░░████║░░██╔══██╗██╔══██╗████╗░████║██╔══██╗██╔══██╗██║░░██║██║░██╔╝  ██║░░░██║██╔════╝ >con
 echo ░╚██╗████╗██╔╝██║██╔██╗██║██╔██║░░██╔██║░░██║░░╚═╝██║░░██║██╔████╔██║██████╔╝██║░░╚═╝███████║█████═╝░  ╚██╗░██╔╝██████╗░ >con
@@ -73,6 +76,7 @@ ping 127.0.0.1 -n 1 -w 500> nul & set /p "=[" <nul
 ping 127.0.0.1 -n 1 -w 500> nul & set /p "=V" <nul
 ping 127.0.0.1 -n 1 -w 500> nul & set /p "=5" <nul
 ping 127.0.0.1 -n 1 -w 500> nul & echo ]
+)
 title Windows 11 Compatibility Check [v5] >con
 
 ::Sets the default variables
@@ -107,11 +111,15 @@ for /F "tokens=1-4 delims=:.," %%a in ("%time%") do ( set /A "start=(((%%a*60)+1
 set "timest=%time%"
 ::Check Index file
 if not "%ovrind%"=="1" (
-if exist "%AppData%\Win11CompChk\index.bat" ( echo Win11CompChk Index found. >con && call "%AppData%\Win11CompChk\index.bat" && goto :f) else ( echo Win11CompChk Index not found. Running Slow Mode... >con)
+if exist "%AppData%\Win11CompChk\index.bat" ( echo Win11CompChk Index found. >con && call "%AppData%\Win11CompChk\index.bat" && goto :e) else ( echo Win11CompChk Index not found. Running Slow Mode... >con)
+)
+
+if "%ovrind%"=="1" (
+del "%appdata%\Win11CompChk\index.bat"
 )
 
 :: Requires Admin Previliges
-(Fsutil Dirty Query %SystemDrive%>Nul)||(PowerShell start-process -filepath """cmd""" -argumentlist """/c %~fn0 %1 %2 %3 /d""" -verb RunAs & Exit /B)
+(Fsutil Dirty Query %SystemDrive%>Nul)||(PowerShell start-process -filepath """cmd""" -argumentlist """/c %~fn0 %1 %2 %3 /d""" -verb RunAs & exit /b )
 :: Parameter check
 if "%1"=="-T" (
 if "%2"=="Fail" ( set "wesu=0" )
@@ -930,7 +938,7 @@ if not "%CPUComp%"=="Compatible" ( echo Your Processor is not listed as compatib
 ::DXVersion
 echo. >con
 echo Checking DirectX version... >con
-dxdiag /t %temp%\dx.txt && timeout 15 /nobreak >nul && type %temp%\dx.txt | findstr /c:"DirectX Version" >%temp%\DXV.log
+dxdiag /t %temp%\dx.txt && type %temp%\dx.txt | findstr /c:"DirectX Version" >%temp%\DXV.log
 
 powershell ^(get-content "%temp%\DXV.log"^) -replace 'DirectX Version:','' ^|  Out-File %temp%\DXV2.log
 powershell ^(get-content "%temp%\DXV2.log"^) -replace ' ','' ^|  Out-File %temp%\DXV3.log
@@ -982,11 +990,7 @@ if "%cpuf%" GEQ "1000" ( echo Your CPU Frequency is supported by Windows 11. >co
 ::RAM
 echo. >con
 echo Checking RAM installed... >con
-powershell -Command gcim CIM_ComputerSystem -Property * ^| select -ExpandProperty TotalPhysicalMemory >%temp%\RAM2.log
-
-set /p "ram0=" <%temp%\RAM2.log
-
-powershell [math]::Round(%ram0%/1GB) >%temp%\ram.log 
+for /f "delims=" %%P in ('powershell $MATH ^= Get-WmiObject -Class win32_computersystem -ComputerName localhost ^^^| select -expandproperty TotalPhysicalMemory^; [math]::round^($MATH/1GB^)') do set "ram=%%P"
 
 set /p "ram=" <%temp%\RAM.log
 
@@ -1142,6 +1146,10 @@ set "mre=[41;37mX[106;30m "
 ping google.com /n 2 >nul && (set "ire=[102mOK[106m" && set "inte=Has Internet Connectivity") || (set "ire=[41;37mX[106;30m " && set "inte=Has no Internet Connectivity")
 echo %inte% >con
 
+goto :f
+:e
+if not "%ver2%"=="%curver%" ( echo Win11CompChk Index is not the same version as the script. & echo It is not recommended to run Win11CompChk Index [%ver2%] in newer or older versions. & echo Overriding... & set "ovrind=1" & goto strpn)
+
 ::Final
 :f
 set "timef=%time%"
@@ -1152,7 +1160,7 @@ rem Get elapsed time:
 set /A elapsed=end-start
 rem Show elapsed time: 
 set /A hh=elapsed/(60*60*100), rest=elapsed%%(60*60*100), mm=rest/(60*100), rest%%=60*100, ss=rest/100, cc=rest%%100 
-if %mm% lss 10 set mm=0%mm% 
+if %mm% lss 10 set mm=0%mm% 0
 if %ss% lss 10 set ss=0%ss%
 if %cc% lss 10 set cc=0%cc%
 if exist "%appdata%\Win11CompChk\index2.bat" ( del "%appdata%\Win11CompChk\index2.bat")
@@ -1165,8 +1173,13 @@ echo set "people=%people%" >>"%appdata%\Win11CompChk\index2.bat"
 echo set "desc=%desc%" >>"%appdata%\Win11CompChk\index2.bat"
 echo set "dt=%dt%" >>"%appdata%\Win11CompChk\index2.bat"
 :fnal
+if "%V2%"=="1" ( goto V2Ex)
+if not "%V2%"=="1" (
 start cmd /c "%~fn0 -G test01" /d
 exit /b
+) else (
+exit /b
+)
 :test01
 call "%appdata%\Win11CompChk\index2.bat"
 :test00
@@ -1177,6 +1190,8 @@ mkdir "%appdata%\Win11CompChk"
 )
 if not exist "%appdata%\Win11CompChk\index.bat" (
 echo set "usrnm=%username%" >"%appdata%\Win11CompChk\index.bat"
+echo set "ver2=%curver%" >>"%appdata%\Win11CompChk\index.bat"
+echo set "date2=%date%" >>"%appdata%\Win11CompChk\index.bat"
 echo set "cre=%cre%" >>"%appdata%\Win11CompChk\index.bat"
 echo set "crre=%crre%" >>"%appdata%\Win11CompChk\index.bat"
 echo set "cfre=%cfre%" >>"%appdata%\Win11CompChk\index.bat"
@@ -1243,11 +1258,17 @@ if "%mre%"=="[102mOK[106m" ( set /a "points+=1")
 if "%tvre%"=="[102mOK[106m" ( set /a "points+=1")
 if "%points%"=="13" ( set "res=can") else ( set "res=can't")
 
-mode con cols=75 lines=28
+if "%date2%"=="" (
+set "date2=%date%"
+)
+
+mode con cols=75 lines=31
 color b0
 echo. >con                     
 ping 127.0.0.1 -n 1 -w 1000> nul
-echo                  [41;37m Windows 11 will release at Oct 5 2021! [106;30m
+echo                       [41;37m Windows 11 is just released! [106;30m
+ping 127.0.0.1 -n 1 -w 1000> nul
+echo               [41;37m jbcarreon123.github.io/links/win11-released [106;30m
 ping 127.0.0.1 -n 1 -w 1000> nul
 echo                                  Results:
 ping 127.0.0.1 -n 1 -w 1000> nul
@@ -1293,7 +1314,11 @@ echo  %ire%       Internet:      %inte%
 ping 127.0.0.1 -n 1 -w 1000> nul
 echo. >con
 ping 127.0.0.1 -n 1 -w 1000> nul
-echo  This took around %mm%: %ss%,%cc%.  You %res% run Windows 11 on your computer.
+echo                       This took on %date2%.
+ping 127.0.0.1 -n 1 -w 1000> nul
+echo                      This took around %mm%: %ss%,%cc%.
+ping 127.0.0.1 -n 1 -w 1000> nul
+echo                 Your computer %res% support Windows 11.
 ping 127.0.0.1 -n 1 -w 1000> nul
 echo     [0] ^> Exit  [C] ^> Copy Results  [E] ^> Export Results  [A] ^> About
 echo           [M] ^> More info of the result  [B] ^> Back to CMD Prompt
@@ -1341,7 +1366,7 @@ echo TPM:             Active: %tpm1%, Enabled: %tpm2%, Version: %tpmver% >>%temp
 echo Monitor Res:     %HRes%x%VRes% >>%temp%\res.log
 echo Internet:        %inte% >>%temp%\res.log
 echo. >con >>%temp%\res.log
-echo RESULTS: You %res% run Windows 11 on your computer. >>%temp%\res.log
+echo RESULTS: This PC %res% support Windows 11. >>%temp%\res.log
 echo The Results is from Win11CompChk by jbcarreon123. >>%temp%\res.log
 if "%code%"=="1" ( echo [/CODE] >>%temp%\res.log)
 if "%code%"=="2" ( echo ^</code^> >>%temp%\res.log)
@@ -1380,7 +1405,7 @@ echo TPM:             Active: %tpm1%, Enabled: %tpm2%, Version: %tpmver% >>%temp
 echo Monitor Res:     %HRes%x%VRes% >>%temp%\res.log
 echo Internet:        %inte% >>%temp%\res.log
 echo. >con >>%temp%\res.log
-echo RESULTS: You %res% run Windows 11 on your computer. >>%temp%\res.log
+echo RESULTS: This PC %res% support Windows 11. >>%temp%\res.log
 echo The Results is from Win11CompChk by jbcarreon123. >>%temp%\res.log
 if "%code%"=="1" ( echo [/CODE] >>%temp%\res.log)
 if "%code%"=="2" ( echo ^</code^> >>%temp%\res.log)
@@ -1393,7 +1418,7 @@ goto Final
 cls
 echo. >con
 ping 127.0.0.1 -n 1 -w 500> nul
-echo        Windows 11 Compatibility Check v5
+echo        Windows 11 Compatibility Check v5.4.0
 ping 127.0.0.1 -n 1 -w 500> nul
 echo. >con
 ping 127.0.0.1 -n 1 -w 500> nul
@@ -1610,16 +1635,6 @@ echo        [31mThat the incompatible PC are not eligible on Windows Updates fo
 ping 127.0.0.1 -n 1 -w 500> nul
 echo        all updates.[30m
 ping 127.0.0.1 -n 1 -w 500> nul
-echo.
-ping 127.0.0.1 -n 1 -w 500> nul
-echo        Also, if you on the Windows 11 Insider Program, your
-ping 127.0.0.1 -n 1 -w 500> nul
-echo        incompatible PC will be kicked out of Insider Program,
-ping 127.0.0.1 -n 1 -w 500> nul
-echo        and you need to clean install Windows 10 or switch to
-ping 127.0.0.1 -n 1 -w 500> nul
-echo        Release Preview.
-ping 127.0.0.1 -n 1 -w 500> nul
 echo. >con
 ping 127.0.0.1 -n 1 -w 500> nul
 echo        Press [ANY KEY] to go back on the Results page.
@@ -1653,6 +1668,24 @@ if "%curver%" LEQ %CPW% ( echo New Pre-Release Available! Win11CompChk v%CPW% & 
 )
 goto strpn
 
+:V2Ex
+echo CPUArchitecture    : %CPUA%> %V2Path%
+echo OSArchitecture     : %OSA%>> %V2Path%
+echo BIOSMode           : %firmware_type%>> %V2Path%
+echo CPUName            : %CPUN%>> %V2Path%
+echo CPUCoreCount       : %CPUCN% Cores, %CPULP% Threads>> %V2Path%
+echo CPUFrequency       : %CPUF%>> %V2Path%
+echo DirectXVersion     : %DXV%>> %V2Path%
+echo InternetConnection : %inte%>> %V2Path%
+echo MonitorResolution  : %HRes%x%VRes%>> %V2Path%
+echo SecureBoot         : %sbr%>> %V2Path%
+echo TotalPhysicalRAM   : %RAM%GB>> %V2Path%
+echo TotalFreeSpace     : %GB%GB>> %V2Path%
+echo TPMActive          : %tpm1%>> %V2Path%
+echo TPMEnabled         : %tpm2%>> %V2Path%
+echo TPMVersion         : %tpmv%>> %V2Path%
+echo WDDMVersion        : %wddmv%>> %V2Path%
+exit /b
 
 :cmd
 echo [0m
