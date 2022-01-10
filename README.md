@@ -1,4 +1,4 @@
-![GitHub all releases](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/total) [![wefr](https://img.shields.io/badge/ElevenForum-Resource-informational)](https://www.elevenforum.com/resources/windows-11-compatibility-check.4/)
+![GitHub all releases](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/total) [![wefr](https://img.shields.io/badge/ElevenForum-Resource-informational)](https://www.elevenforum.com/resources/windows-11-compatibility-check.4/) ![platform](https://img.shields.io/badge/platform-win11--64 %7C win10--32--64 %7C win81--32--64 %7C win8--32--64 %7C win7--32--64-lightgrey)
 
 # ![win11cchk](https://user-images.githubusercontent.com/86447165/133719286-29fca789-1a85-4744-9102-2cad869f2eb0.jpg)
 
