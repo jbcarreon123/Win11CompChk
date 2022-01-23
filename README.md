@@ -44,6 +44,10 @@ NOTE: If you want to use other compilers than instructed here, you may be expire
 ## Execution Time of Index Mode (on HDD) [Win11CompChk v5.1.0]
 ![ywKx8AFmvf](https://user-images.githubusercontent.com/86447165/132702265-423e1263-8859-4c7e-8bc1-47ae7241dce2.gif)
 
+## Repositories that helped so Win11CompChk will be made
+- rcmaehl/WhyNotWin11 (WhyNotWin11? Yes! You heard it right! I used some WhyNotWin11 source to make this.)
+- *There is no other repositories that helped to make this*
+
 ```
 Windows and Windows 11 are trademark of Microsoft Inc.
 Win11CompChk are not endorsed or affiliated by Microsoft Inc.
