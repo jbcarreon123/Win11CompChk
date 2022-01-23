@@ -45,7 +45,7 @@ NOTE: If you want to use other compilers than instructed here, you may be expire
 ![ywKx8AFmvf](https://user-images.githubusercontent.com/86447165/132702265-423e1263-8859-4c7e-8bc1-47ae7241dce2.gif)
 
 ## Repositories that helped so Win11CompChk will be made
-- rcmaehl/WhyNotWin11 (WhyNotWin11? Yes! You heard it right! I used some WhyNotWin11 source to make this.)
+- [rcmaehl/WhyNotWin11](https://github.com/rcmaehl/WhyNotWin11/) (WhyNotWin11? Yes! You heard it right! I used some WhyNotWin11 source to make this.)
 - *There is no other repositories that helped to make this*
 
 ```
