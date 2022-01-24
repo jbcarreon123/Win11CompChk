@@ -1,6 +1,6 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/jbcarreon123/Win11CompChk/total) [![wefr](https://img.shields.io/badge/ElevenForum-Resource-informational)](https://www.elevenforum.com/resources/windows-11-compatibility-check.4/) ![platform](https://img.shields.io/badge/platform-win11--64%20%7C%20win10--32--64%20%7C%20win81--32--64%20%7C%20win8--32--64%20%7C%20win7--32--64-lightgrey)
 
-# ![win11cchk](https://user-images.githubusercontent.com/86447165/133719286-29fca789-1a85-4744-9102-2cad869f2eb0.jpg)
+![](https://i.imgur.com/ml4qpub.png)
 
 Windows 11 Compatibility Check is an tool that runs in cmd.exe. No installations required!
 
