@@ -8,6 +8,8 @@ Win11CompChk is the smallest Windows 11 Compatibility checker yet.
 
 ![cmd_YHRrevXhEV](https://user-images.githubusercontent.com/86447165/150712126-75595721-494b-43a1-b457-8866882c2cdd.png)
 
+> ℹ This repository is on life support. Expect fewer releases (but I trying to make a release monthly)
+
 ## Features
 Copy and Export Results (that you can use to share the compatibility)
 
