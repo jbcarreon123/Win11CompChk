@@ -48,7 +48,6 @@ NOTE: If you want to use other compilers than instructed here, you may be expire
 
 ## Repositories that helped so Win11CompChk will be made
 - [rcmaehl/WhyNotWin11](https://github.com/rcmaehl/WhyNotWin11/) (WhyNotWin11? Yes! You heard it right! I used some WhyNotWin11 source to make this.)
-- 7zip
 - *There is no other repositories that helped to make this*
 
 ```
