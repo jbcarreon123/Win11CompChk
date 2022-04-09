@@ -1,0 +1,93 @@
+- name: Issue Bot Action
+
+  # You may pin to the exact commit or the version.
+
+  # uses: imjohnbo/issue-bot@10c7bb1a46863fed48616321dfe8777a11497247
+
+  uses: imjohnbo/issue-bot@v3.3.6
+
+  with:
+
+    # Token used to authenticate with GitHub API. Default is built-in token but a personal access token may be used for organization or user projects.
+
+    token: # optional, default is ${{ github.token }}
+
+    # Issue title, e.g. "Daily standup"
+
+    title: 
+
+    # Issue body in Markdown, e.g. # Summary **bolded text**.
+
+    body: # optional
+
+    # Comma delimited list of existing issue labels to be applied to new issue, e.g. "bug, ci".
+
+    labels: # optional
+
+    # Comma delimited list of issue assignees having write access to repo, e.g. "imjohnbo, nat".
+
+Assigns new issue to all assignees, or if "rotateAssignees" is set, to the next single assignee whose turn it is.
+
+    assignees: # optional
+
+    # Project type the "project" number corresponds to, e.g. user, organization, or repository project. 
+
+Organization and user projects require a GitHub App installation access token, OAuth token, or Personal Access Token.
+
+Read more here: https://docs.github.com/en/github/managing-your-work-on-github/about-project-boards.
+
+Defaults to "repository".
+
+    project-type: # optional
+
+    # Project number (not ID or name) to add issue to, e.g. 2.
+
+    project: # optional
+
+    # Project column name to add issue to, e.g. To Do.
+
+Required if "project" is set.
+
+    column: # optional
+
+    # Milestone number (not ID or name) to add issue to, e.g. 2.
+
+    milestone: # optional
+
+    # Boolean whether to pin this issue and unpin the previous issue matching ALL of the provided "labels".
+
+Requires "labels".
+
+    pinned: # optional, default is false
+
+    # Boolean whether to close the most recent previous issue matching ALL of the provided "labels".
+
+Requires "labels".
+
+    close-previous: # optional, default is false
+
+    # Boolean whether to write issue comments linking this issue and previous issue matching ALL of the provided "labels",
+
+e.g. "Previous in series: #345" and "Next in series: #346".
+
+Requires "labels".
+
+    linked-comments: # optional, default is false
+
+    # Text of the comment on the new issue that links to the previous issue.
+
+Requires "linked-comments, labels".
+
+    linked-comments-new-issue-text: # optional, default is Previous in series: #{{ previousIssueNumber }}
+
+    # Text of the comment on the previous issue that links to the new issue.
+
+Requires "linked-comments, labels".
+
+    linked-comments-previous-issue-text: # optional, default is Next in series: #{{ newIssueNumber }}
+
+    # Boolean whether to round robin the provided assignees, e.g. for first responder duties.
+
+Requires "labels", "assignees".
+
+    rotate-assignees: # optional, default is false
